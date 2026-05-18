@@ -303,6 +303,13 @@ section { padding: 88px 5vw; }
   line-height: 1; margin-top: 4px; flex-shrink: 0;
   letter-spacing: -2px;
 }
+.hero-stat-icon {
+  width: 44px; height: 44px;
+  background: var(--navy-l);
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
 .hero-stat-num-plain {
   font-size: 34px; font-weight: 800;
   color: var(--navy); line-height: 1;
@@ -407,12 +414,20 @@ section { padding: 88px 5vw; }
   margin-bottom: 16px; font-weight: 400;
 }
 .about-text strong { color: var(--navy); font-weight: 700; }
-.about-license-inline {
-  margin-top: 20px;
-  font-size: 13px;
-  color: #999;
+.about-copy {
+  font-size: 17px;
+  color: var(--dim);
+  line-height: 1.85;
   font-weight: 400;
 }
+.about-license-inline {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.7;
+}
+.about-license-inline span { display: block; }
 .about-license {
   margin-top: 24px;
   padding: 16px 20px;
@@ -440,7 +455,7 @@ section { padding: 88px 5vw; }
 #services { background: var(--bg); }
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   margin-top: 44px;
 }
@@ -465,6 +480,7 @@ section { padding: 88px 5vw; }
 }
 .service-title {
   font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 10px;
+  white-space: nowrap;
 }
 .service-desc {
   font-size: 16px; color: var(--dim); line-height: 1.7; font-weight: 400;
@@ -545,7 +561,8 @@ section { padding: 88px 5vw; }
 }
 .price-main {
   font-size: 44px; font-weight: 800; color: var(--ink);
-  line-height: 1; letter-spacing: -2px;
+  line-height: 1; letter-spacing: -1px;
+  font-family: 'PingFang TC', '蘋方-繁', 'Noto Sans TC', sans-serif;
 }
 .price-card.featured .price-main { color: var(--gold); }
 .price-unit-inline {
@@ -955,14 +972,12 @@ footer a:hover { color: var(--gold); }
   margin-top: 24px;
 }
 
-/* ─── SEC-LABEL LARGE ─── */
-.sec-label-lg {
-  font-size: 15px !important;
-  letter-spacing: 2px;
-}
-
 /* ─── TRIAL SECTION ─── */
-#trial { background: var(--bg); }
+#trial { background: var(--navy); }
+#trial .sec-label { color: rgba(255,255,255,0.45); }
+#trial .sec-label::before { background: rgba(255,255,255,0.25); }
+#trial .sec-h2 { color: #fff; }
+#trial .sec-sub { color: rgba(255,255,255,0.6); max-width: none; }
 .trial-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -970,61 +985,205 @@ footer a:hover { color: var(--gold); }
   margin-top: 44px;
 }
 .trial-card {
-  background: var(--white);
-  border: 1.5px solid var(--rule);
-  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  border: 1.5px solid rgba(247,206,70,0.55);
+  border-radius: 16px;
   padding: 32px 28px;
-  transition: box-shadow 0.15s;
+  box-shadow: 0 18px 44px rgba(12,18,58,0.22);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
-.trial-card:hover { box-shadow: 0 8px 24px rgba(36,53,129,0.08); }
+.trial-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: var(--gold);
+}
+.trial-card:hover {
+  border-color: var(--gold);
+  background: #fffdf5;
+  transform: translateY(-4px);
+  box-shadow: 0 24px 54px rgba(12,18,58,0.3);
+}
 .trial-card-cta {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 18px 44px rgba(12,18,58,0.2);
+  display: flex; flex-direction: column;
 }
-.trial-card-ico { font-size: 28px; margin-bottom: 14px; }
+.trial-card-cta::before { display: none; }
+.trial-card-cta:hover {
+  background: var(--gold-d);
+  border-color: var(--gold-d);
+}
+.trial-card-ico {
+  font-size: 32px; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: flex-start;
+}
 .trial-card-title {
-  font-size: 14px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 2px; color: var(--muted); margin-bottom: 10px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2.5px; color: rgba(36,53,129,0.62); margin-bottom: 12px;
 }
-.trial-card-cta .trial-card-title { color: rgba(255,255,255,0.5); }
+.trial-card-cta .trial-card-title { color: rgba(36,53,129,0.6); }
 .trial-card-price {
-  font-size: 44px; font-weight: 800;
+  font-size: 52px; font-weight: 800;
   color: var(--navy); line-height: 1;
-  letter-spacing: -2px; margin-bottom: 14px;
+  letter-spacing: -2px; margin-bottom: 16px;
+  font-family: 'PingFang TC', '蘋方-繁', 'Noto Sans TC', sans-serif;
 }
-.trial-card-price span { font-size: 18px; letter-spacing: 0; font-weight: 600; }
+.trial-card-price span {
+  font-size: 20px; letter-spacing: 0; font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+}
 .trial-card-desc {
   font-size: 16px; color: var(--dim); line-height: 1.75;
 }
-.trial-card-cta .trial-card-desc { color: rgba(255,255,255,0.65); }
+.trial-card-cta .trial-card-desc { color: var(--navy); font-weight: 500; }
+.trial-card-cta .trial-card-ico { font-size: 32px; }
+.trial-cta-btn {
+  margin-top: auto; padding-top: 24px;
+}
+.btn-trial-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; height: 52px;
+  background: var(--navy); color: #fff;
+  font-size: 16px; font-weight: 800; border-radius: 10px;
+  text-decoration: none; font-family: inherit;
+  transition: background 0.15s, transform 0.12s;
+}
+.btn-trial-cta:hover { background: var(--navy-d); transform: translateY(-2px); }
+
+/* ─── SEC-LABEL LARGE ─── */
+.sec-label-lg {
+  font-size: 15px !important;
+  letter-spacing: 2px;
+}
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
-  .service-grid { grid-template-columns: repeat(3, 1fr); }
+  .service-grid { grid-template-columns: repeat(2, 1fr); }
   .calc-body { grid-template-columns: 1fr; }
   .calc-inputs { border-right: none; border-bottom: 1px solid var(--rule); padding: 32px 28px; }
   .calc-result { padding: 32px 28px; }
+  .about-grid { gap: 40px; }
 }
+
 @media (max-width: 768px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 36px; }
-  .pain-grid { grid-template-columns: 1fr; }
+  section { padding: 64px 5vw; }
+
+  /* Nav */
+  nav { padding: 0 4vw; height: 58px; }
+  .nav-links { display: none; }
+  .nav-cta { height: 36px; padding: 0 16px; font-size: 14px; }
+
+  /* Hero */
+  #hero { padding-top: 100px; padding-bottom: 56px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-logo-img { width: min(260px, 70vw); }
+  .hero-tagline { font-size: 18px; }
+  .hero-sub { font-size: 16px; margin-bottom: 28px; }
+  .hero-btns { flex-direction: column; gap: 10px; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; height: 50px; font-size: 16px; }
+
+  /* Hero stats — horizontal row on mobile */
+  .hero-stats-plain {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0;
+    background: var(--bg);
+    border-radius: 14px;
+    padding: 0;
+    overflow: hidden;
+    border: 1.5px solid var(--rule);
+  }
+  .hero-stat-plain {
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 10px;
+    gap: 10px;
+    border-right: 1px solid var(--rule);
+  }
+  .hero-stat-plain:last-child { border-right: none; }
+  .hero-stat-icon { margin-top: 0; }
+  .hero-stat-num-plain { font-size: 26px; }
+  .hero-stat-label-plain { font-size: 12px; }
+
+  /* Pain points */
+  .pain-grid { grid-template-columns: 1fr; gap: 0; }
   .flip-card { height: auto; perspective: none; }
   .flip-card-inner { position: static; transform: none !important; }
-  .flip-front { position: static; transform: none; border-radius: 14px 14px 0 0; }
-  .flip-back { position: static; transform: none; border-radius: 0 0 14px 14px; }
-  .service-grid { grid-template-columns: 1fr 1fr; }
-  .pricing-grid { grid-template-columns: 1fr; }
-  .trial-cards { grid-template-columns: 1fr; }
-  .flow-steps { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .flip-front { position: static; transform: none; border-radius: 14px 14px 0 0; padding: 22px 20px 16px; }
+  .flip-back { position: static; transform: none; border-radius: 0 0 14px 14px; padding: 20px 20px 22px; }
+  .flip-hint { display: none; }
+  .pain-grid .flip-card:not(:last-child) { margin-bottom: 16px; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  .about-nums { grid-template-columns: repeat(2, 1fr); }
+  .sec-h2 { font-size: clamp(24px, 6vw, 36px); }
+
+  /* Services — single col, bigger title */
+  .service-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .service-card {
+    padding: 22px 18px;
+    display: flex; flex-direction: row; align-items: flex-start; gap: 14px;
+  }
+  .service-ico { margin-bottom: 0; flex-shrink: 0; width: 42px; height: 42px; }
+  .service-title { font-size: 17px; margin-bottom: 6px; flex: 0 0 72px; }
+  .service-desc { font-size: 15px; }
+
+  /* Flow */
+  .flow-steps { grid-template-columns: 1fr 1fr; gap: 24px; }
   .flow-steps::before { display: none; }
-  .about-grid { grid-template-columns: 1fr; gap: 36px; }
-  .form-grid { grid-template-columns: 1fr; }
-  .form-wrap { padding: 30px 24px; }
-  .nav-links { display: none; }
+
+  /* Pricing */
+  .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Trial */
+  .trial-cards { grid-template-columns: 1fr; gap: 14px; }
   .trial-sec-sub { white-space: normal; }
+  #trial .sec-h2 { font-size: clamp(24px, 6vw, 36px); }
+
+  /* Contact form */
+  .form-grid { grid-template-columns: 1fr; gap: 14px; }
+  .form-wrap { padding: 28px 20px; }
+  .btn-navy-lg { width: 100%; justify-content: center; }
+
+  /* Final CTA */
+  #final-cta { padding: 72px 5vw; }
+  .final-btns { flex-direction: column; align-items: stretch; }
+  .btn-gold, .btn-ghost-white { justify-content: center; }
+
+  /* Footer */
+  footer { flex-direction: column; align-items: flex-start; gap: 8px; padding: 24px 5vw; }
+  .footer-sp { display: none; }
+
+  /* Calculator */
+  .calc-body { grid-template-columns: 1fr; }
+  .calc-inputs { border-right: none; border-bottom: 1px solid var(--rule); padding: 28px 20px; }
+  .calc-result { padding: 28px 20px; }
+
+  /* Trial banner */
+  .trial-banner { flex-direction: column; gap: 14px; align-items: stretch; }
+  .btn-primary-sm { justify-content: center; }
 }
-@media (max-width: 540px) {
+
+@media (max-width: 480px) {
+  section { padding: 52px 4vw; }
   .service-grid { grid-template-columns: 1fr; }
+  .about-nums { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .about-num { padding: 20px 16px; }
+  .about-num-val { font-size: 24px; }
+  .flow-steps { grid-template-columns: 1fr; gap: 16px; }
+  .pain-grid .flip-card { margin-bottom: 12px; }
+  .form-wrap { padding: 22px 16px; }
+  .price-main { font-size: 36px; }
+  .hero-stat-num-plain { font-size: 22px; }
 }
 </style>
 </head>
@@ -1049,29 +1208,52 @@ footer a:hover { color: var(--gold); }
     <div>
       <h1 class="hero-h1"><img class="hero-logo-img" src="ippo_chi_blue.png" alt="一方物流 IPPO"></h1>
       <p class="hero-tagline">代購業者的成長加速器</p>
-      <p class="hero-sub">專為台灣代購業者設計的日本集運方案<br>航班穩定、費率透明、專屬客服，讓您專注在賣貨。</p>
+      <p class="hero-sub">專為台灣代購業者設計的日本集運方案<br>航班穩定、費率透明、專屬客服，讓您專注在賣貨</p>
       <div class="hero-btns">
         <a href="#contact" class="btn-primary">立即預約諮詢 →</a>
         <a href="#pricing" class="btn-secondary">查看費率方案</a>
       </div>
     </div>
     <div class="hero-stats-plain">
+      <!-- 4天：日曆 icon -->
       <div class="hero-stat-plain">
-        <span class="hero-stat-bullet" style="color:var(--gold);font-size:24px;letter-spacing:0">★</span>
+        <span class="hero-stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="18" height="18" rx="2.5" stroke="#243581" stroke-width="2"/>
+            <path d="M3 9h18" stroke="#243581" stroke-width="2"/>
+            <path d="M8 2v4M16 2v4" stroke="#f7ce46" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="8" cy="14" r="1.2" fill="#243581"/>
+            <circle cx="12" cy="14" r="1.2" fill="#243581"/>
+            <circle cx="16" cy="14" r="1.2" fill="#243581"/>
+          </svg>
+        </span>
         <div>
           <div class="hero-stat-num-plain">4天</div>
           <div class="hero-stat-label-plain">最快到台灣時效</div>
         </div>
       </div>
+      <!-- 5班：飛機 icon -->
       <div class="hero-stat-plain">
-        <span class="hero-stat-bullet" style="color:var(--gold);font-size:24px;letter-spacing:0">★</span>
+        <span class="hero-stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 16l-8.5-5L14 4a1 1 0 00-1.8-.6L9 8.5 3.5 7a1 1 0 00-1 1.6l4 3.9-1.8 3.1a.8.8 0 001.1 1.1l3.1-1.8 3.9 4a1 1 0 001.6-1L15.5 13l5 8.5" stroke="#243581" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 20h6" stroke="#f7ce46" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
         <div>
           <div class="hero-stat-num-plain">5班<span style="font-size:0.6em;letter-spacing:0">/週</span></div>
-          <div class="hero-stat-label-plain">每週航班</div>
+          <div class="hero-stat-label-plain">每週固定航班</div>
         </div>
       </div>
+      <!-- 60天：包裹 icon -->
       <div class="hero-stat-plain">
-        <span class="hero-stat-bullet" style="color:var(--gold);font-size:24px;letter-spacing:0">★</span>
+        <span class="hero-stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 8l-9-5-9 5v8l9 5 9-5V8z" stroke="#243581" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 3v18M3 8l9 5 9-5" stroke="#243581" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7.5 5.5l9 5" stroke="#f7ce46" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </span>
         <div>
           <div class="hero-stat-num-plain">60天</div>
           <div class="hero-stat-label-plain">免費倉儲</div>
@@ -1160,10 +1342,16 @@ footer a:hover { color: var(--gold); }
     <div class="about-grid">
       <div class="about-text fade-in">
         <p class="sec-label">關於一方物流</p>
-        <h2 class="sec-h2">最懂代購的集運物流商</h2>
-        <p>一方物流專注於日本集運多年，深知代購業者的需求。從「費率」、「出貨流程」到「帳務處理」，都是專為代購業者設計。</p>
-        <p>我們不只是集運，更是幫助您生意成長的合作夥伴。</p>
-        <p class="about-license-inline">一方鴻達股份有限公司　航空貨運承攬業 貨字第3627號</p>
+        <h2 class="sec-h2">最懂代購的集運物流</h2>
+        <div class="about-copy">
+          一方物流深知代購業者的需求。<br>
+          從「收費方式」、「出貨流程」到「帳務處理」，都是專為代購業者設計。<br>
+          我們不只是集運，更是幫助您生意成長的合作夥伴。
+        </div>
+        <div class="about-license-inline">
+          <span>一方鴻達股份有限公司</span>
+          <span>航空貨運承攬業 貨字第3627號</span>
+        </div>
       </div>
       <div class="about-nums fade-in">
         <div class="about-num">
@@ -1193,22 +1381,17 @@ footer a:hover { color: var(--gold); }
 <section id="services">
   <div class="container">
     <p class="sec-label">服務內容</p>
-    <h2 class="sec-h2">商業會員五大核心服務</h2>
+    <h2 class="sec-h2">商業會員四大核心服務</h2>
     <div class="service-grid fade-in">
       <div class="service-card">
         <div class="service-ico">🛍️</div>
         <div class="service-title">採購服務</div>
-        <div class="service-desc">提供日本批發商店帳號及採購買手。</div>
+        <div class="service-desc">提供日本批發店帳號及專業採購買手。</div>
       </div>
       <div class="service-card">
         <div class="service-ico">📄</div>
         <div class="service-title">正式報關</div>
         <div class="service-desc">可提供日本輸出許可書及台灣正式進口報關。</div>
-      </div>
-      <div class="service-card">
-        <div class="service-ico">🏬</div>
-        <div class="service-title">倉儲宅配</div>
-        <div class="service-desc">客製倉儲宅配服務，送進展場也沒問題。</div>
       </div>
       <div class="service-card">
         <div class="service-ico">🧾</div>
@@ -1231,27 +1414,26 @@ footer a:hover { color: var(--gold); }
   <div class="container">
     <p class="sec-label">出貨流程</p>
     <h2 class="sec-h2">4 個步驟，4 個工作天，包裹送到你手上</h2>
-    <p class="flow-headline-sub">每個環節主動通知，包裹在哪裡不用等你開口問。</p>
     <div class="flow-steps fade-in">
       <div class="flow-step">
         <div class="flow-num active">01</div>
         <div class="flow-title">日本倉收件</div>
-        <div class="flow-desc">使用一方日本倉庫地址收件，包裹進倉即通知。</div>
+        <div class="flow-desc">使用一方日本倉庫地址收件<br>包裹進倉後歸屬到您的帳號</div>
       </div>
       <div class="flow-step">
         <div class="flow-num">02</div>
-        <div class="flow-title">預約出貨 & 打包</div>
-        <div class="flow-desc">透過系統預約出貨，隔天完成打包裝箱。</div>
+        <div class="flow-title">預約出貨 &amp; 打包</div>
+        <div class="flow-desc">透過系統預約出貨<br>隔天完成打包裝箱</div>
       </div>
       <div class="flow-step">
         <div class="flow-num">03</div>
-        <div class="flow-title">航班回台 & 清關</div>
-        <div class="flow-desc">固定航班回台，當天清關作業，進度主動通報。</div>
+        <div class="flow-title">航班回台 &amp; 清關</div>
+        <div class="flow-desc">固定航班回台<br>當天完成清關作業</div>
       </div>
       <div class="flow-step">
         <div class="flow-num">04</div>
         <div class="flow-title">宅配到府</div>
-        <div class="flow-desc">由黑貓或新竹物流宅配，5kg+ 免宅配費。</div>
+        <div class="flow-desc">由黑貓或新竹物流宅配<br>5kg+ 免宅配費</div>
       </div>
     </div>
   </div>
@@ -1264,7 +1446,6 @@ footer a:hover { color: var(--gold); }
   <div class="container">
     <p class="sec-label sec-label-lg">費用說明</p>
     <h2 class="sec-h2">收費標準透明簡單，沒有任何隱藏費用</h2>
-    <p class="sec-sub">公斤制計費，材積規則明確，帳算清楚生意才做得下去。</p>
     <div class="pricing-grid fade-in">
 
       <!-- 一般會員 -->
@@ -1272,12 +1453,12 @@ footer a:hover { color: var(--gold); }
         <div class="price-card-head">
           <div class="price-tier">一般會員</div>
           <div class="price-main-row">
-            <span class="price-main">$250</span><span class="price-unit-inline">元 / kg</span>
+            <span class="price-main">＄250</span><span class="price-unit-inline">元 / kg</span>
           </div>
         </div>
         <div class="price-card-body">
           <div class="price-conditions">
-            <div class="price-condition">宅配費 $100 / 件</div>
+            <div class="price-condition">宅配費 ＄100 / 件</div>
             <div class="price-condition">出貨達 5kg 免宅配費</div>
             <div class="price-condition">代購匯率 0.24</div>
           </div>
@@ -1291,13 +1472,13 @@ footer a:hover { color: var(--gold); }
         <div class="price-card-head">
           <div class="price-tier">商業會員</div>
           <div class="price-main-row">
-            <span class="price-main">$200</span><span class="price-unit-inline price-unit-inline-featured">元 / kg</span>
+            <span class="price-main">＄200</span><span class="price-unit-inline price-unit-inline-featured">元 / kg</span>
           </div>
           <div class="price-unit">月出貨 50kg+</div>
         </div>
         <div class="price-card-body">
           <div class="price-conditions">
-            <div class="price-condition">宅配費 $100 / 件</div>
+            <div class="price-condition">宅配費 ＄100 / 件</div>
             <div class="price-condition">出貨達 5kg 免宅配費</div>
             <div class="price-condition">月結帳務（100kg+ 適用）</div>
             <div class="price-condition">代購匯率 0.21</div>
@@ -1335,26 +1516,28 @@ footer a:hover { color: var(--gold); }
 <section id="trial">
   <div class="container">
     <p class="sec-label sec-label-lg">首單體驗</p>
-    <h2 class="sec-h2">想先試試看？首單體驗價 $180/kg，零風險</h2>
-    <p class="sec-sub trial-sec-sub">首單不需要承諾長期合作，使用一次覺得好再繼續。我們有信心讓你留下來。</p>
+    <h2 class="sec-h2">想先試試看？<br>首單體驗價 ＄180/kg，零風險</h2>
+    <p class="sec-sub trial-sec-sub">首單不需要承諾長期合作，使用一次覺得好再繼續。</p>
     <div class="trial-cards fade-in">
       <div class="trial-card">
-        <div class="trial-card-ico">🎯</div>
-        <div class="trial-card-title">首次優惠</div>
-        <div class="trial-card-price">$180<span>/kg</span></div>
-        <div class="trial-card-desc">首次出貨不需任何條件，使用一次覺得好再繼續配合。</div>
+        <div class="trial-card-ico">🏷️</div>
+        <div class="trial-card-title">首單體驗價</div>
+        <div class="trial-card-price">＄180<span>/kg</span></div>
+        <div class="trial-card-desc">無需任何條件，出一次貨就知道差在哪</div>
       </div>
       <div class="trial-card">
         <div class="trial-card-ico">📦</div>
         <div class="trial-card-title">移倉補貼</div>
-        <div class="trial-card-price" style="font-size:28px;letter-spacing:-0.5px;white-space:nowrap">移倉補貼</div>
-        <div class="trial-card-desc">正在使用其他集運？一方提供移倉補貼，讓您無痛轉移。</div>
+        <div class="trial-card-price" style="font-size:36px;letter-spacing:-1px">移倉補貼</div>
+        <div class="trial-card-desc">正在使用其他集運？一方提供移倉補貼，讓您無痛轉移</div>
       </div>
       <div class="trial-card trial-card-cta">
         <div class="trial-card-ico">💬</div>
-        <div class="trial-card-title">一個工作日內回覆</div>
-        <div class="trial-card-desc" style="margin-bottom:24px">留下聯絡方式，顧問主動了解你的出貨需求，提供適合的方案建議。</div>
-        <a href="#contact" class="btn-primary">預約首單體驗 →</a>
+        <div class="trial-card-title">一個工作日回覆</div>
+        <div class="trial-card-desc">留下聯絡方式，顧問主動了解你的出貨需求，提供適合的方案建議</div>
+        <div class="trial-cta-btn">
+          <a href="#contact" class="btn-trial-cta">預約首單體驗 →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -1369,24 +1552,16 @@ footer a:hover { color: var(--gold); }
     <h2 class="sec-h2">合作前你可能想知道的</h2>
     <div class="faq-list fade-in">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">商業會員的日本倉庫地址是獨立的嗎？<span class="faq-arrow">▾</span></button>
-        <div class="faq-a">所有客戶統一使用一方日本倉庫地址，系統以會員帳號區分識別，包裹進倉後自動歸屬到您的帳號，當天下班前上架系統通知。</div>
+        <button class="faq-q" onclick="toggleFaq(this)">如果我到日本連線，你們可以到飯店取貨嗎？<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">可以的，只要您自行打包，並和飯店櫃檯確認好能寄放包裹，我們能預約當地物流公司前往提貨。<br>另外，我們在東京也有集貨點，您可以自行前往。</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">EZway 申報我不熟，你們可以協助嗎？<span class="faq-arrow">▾</span></button>
-        <div class="faq-a">可以。EZway 是海關實名認證系統，需要您在台灣這端完成申報。商業會員有獨立客服窗口協助引導，不用排隊等候。EZway 目前無法在境外使用，出國期間請提前告知我們處理。</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">包裹材積怎麼計算？<span class="faq-arrow">▾</span></button>
-        <div class="faq-a">材積計算公式：長 × 寬 × 高（cm）÷ 6,000。若材積重量超過實際重量 5 倍，則以材積重量計費。計費重以打包後實際測量為準，最低 1 公斤。</div>
+        <button class="faq-q" onclick="toggleFaq(this)">收費重量怎麼算，材積收費規則怎麼計算？<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">我們以包裹打包後的重量計費，最低收費１kg。<br>如果包裹材積特別大，超過重量的３倍以上，仍以包裹重量收費，但費率將以＄350/kg 計算。<br>材積計算公式：長 × 寬 × 高（cm）÷ 6,000。</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">航班幾天出發一次？時效怎麼抓？<span class="faq-arrow">▾</span></button>
-        <div class="faq-a">每週五班：週二、三、四、五、日出發，遇國定假日依最新公告調整。整體時效最快 4 個工作天，視清關狀況而定。</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">包裹破損或遺失怎麼處理？<span class="faq-arrow">▾</span></button>
-        <div class="faq-a">首單體驗期間提供全額保障。一般情況依照理賠規範處理，責任歸屬釐清後進行賠償。有任何異常請透過客服窗口提報，我們會協助追查。</div>
+        <div class="faq-a">每週有５個航班：週二、三、四、五、日出發，遇國定假日依最新公告調整。<br>如果沒有遇到航班或清關抽查導致延誤，正常是4 個工作天送達。</div>
       </div>
     </div>
   </div>
