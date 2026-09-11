@@ -447,7 +447,7 @@ section { padding: 88px 5vw; }
 }
 .about-license strong { color: var(--ink); }
 .about-nums {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
 }
 .about-num {
   background: var(--navy); border-radius: 14px; padding: 26px 22px;
@@ -1131,7 +1131,7 @@ footer a:hover { color: var(--gold); }
 
   /* About */
   .about-grid { grid-template-columns: 1fr; gap: 32px; }
-  .about-nums { grid-template-columns: repeat(2, 1fr); }
+  .about-nums { grid-template-columns: repeat(3, 1fr); }
   .sec-h2 { font-size: clamp(24px, 6vw, 36px); }
 
   /* Services — single col, bigger title */
@@ -1183,7 +1183,7 @@ footer a:hover { color: var(--gold); }
 @media (max-width: 480px) {
   section { padding: 52px 4vw; }
   .service-grid { grid-template-columns: 1fr; }
-  .about-nums { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .about-nums { grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .about-num { padding: 20px 16px; }
   .about-num-val { font-size: 24px; }
   .flow-steps { grid-template-columns: 1fr; gap: 16px; }
@@ -1377,10 +1377,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="about-num-val">150%+</div>
           <div class="about-num-label">年成長率</div>
         </div>
-        <div class="about-num">
-          <div class="about-num-val">月結</div>
-          <div class="about-num-label">帳務彈性 100kg+</div>
-        </div>
       </div>
     </div>
   </div>
@@ -1473,7 +1469,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="price-condition">出貨達 5kg 免宅配費</div>
             <div class="price-condition">代購匯率 0.24</div>
           </div>
-          <div class="price-note">材積超過重量 5 倍另計</div>
         </div>
       </div>
 
@@ -1485,16 +1480,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="price-main-row">
             <span class="price-main">＄200</span><span class="price-unit-inline price-unit-inline-featured">元 / kg</span>
           </div>
-          <div class="price-unit">月出貨 50kg+</div>
+          <div class="price-unit">月出貨 100kg+</div>
         </div>
         <div class="price-card-body">
           <div class="price-conditions">
             <div class="price-condition">宅配費 ＄100 / 件</div>
             <div class="price-condition">出貨達 5kg 免宅配費</div>
-            <div class="price-condition">月結帳務（100kg+ 適用）</div>
             <div class="price-condition">代購匯率 0.21</div>
           </div>
-          <div class="price-note">月出貨 100kg 以上另有優惠，歡迎洽談</div>
+          <div class="price-note">月出貨 300kg 以上另有優惠，歡迎洽談</div>
         </div>
       </div>
 
