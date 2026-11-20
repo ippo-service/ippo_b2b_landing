@@ -731,7 +731,7 @@ section { padding: 88px 5vw; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 28px; }
 .form-group.full { grid-column: 1 / -1; }
 .form-label {
-  display: block; font-size: 13px; font-weight: 700;
+  display: block; font-size: 14px; font-weight: 700;
   color: var(--charcoal); margin-bottom: 8px;
   letter-spacing: 0.5px; text-transform: uppercase;
 }
@@ -754,7 +754,17 @@ section { padding: 88px 5vw; }
 }
 .form-textarea { height: 110px; resize: vertical; line-height: 1.6; }
 .form-hint { font-size: 15px; color: var(--muted); margin-top: 8px; font-weight: 400; }
+.form-field-error { color: #b42318; font-size: 14px; line-height: 1.6; margin: 8px 0 0; }
+.form-field-error[hidden], #form-error[hidden] { display: none; }
+.form-input[aria-invalid="true"], .form-select[aria-invalid="true"], .form-textarea[aria-invalid="true"] {
+  border-color: #b42318;
+}
+.form-input[aria-invalid="true"]:focus, .form-select[aria-invalid="true"]:focus, .form-textarea[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(180,35,24,0.12);
+}
+.form-required-note { font-size: 14px; color: var(--dim); margin: -16px 0 24px; }
 .form-submit { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+#form-error { color: #b42318; font-size: 15px; line-height: 1.6; margin: 0; }
 .btn-navy-lg {
   height: 54px; padding: 0 34px; border-radius: 10px;
   background: var(--navy); color: #fff;
@@ -763,6 +773,7 @@ section { padding: 88px 5vw; }
   transition: background 0.15s, transform 0.1s;
 }
 .btn-navy-lg:hover { background: var(--navy-d); transform: translateY(-1px); }
+.btn-navy-lg:disabled { opacity: 0.65; cursor: wait; transform: none; }
 .form-agree-note { font-size: 15px; color: var(--muted); }
 .form-agree-note a { color: var(--navy); text-decoration: underline; }
 .form-success { display: none; text-align: center; padding: 56px 0; }
@@ -1576,42 +1587,56 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="sec-label">預約顧問諮詢</p>
     <h2 class="sec-h2">留下聯絡方式，我們主動聯繫你</h2>
     <div class="form-wrap">
-      <div id="form-main">
+      <form id="form-main" novalidate>
         <div class="form-title">一個工作日內回覆</div>
         <div class="form-subtitle">不清楚要問什麼也沒關係，顧問會主動了解你的出貨需求，提供適合的方案建議。</div>
+        <p class="form-required-note">標示 <span class="req">*</span> 為必填。請留下可聯繫到你的手機與 LINE ID，方便顧問回覆。</p>
         <div class="form-grid">
-          <div class="form-group">
+          <div class="form-group full">
             <label class="form-label" for="f-name">姓名 / 公司名稱 <span class="req">*</span></label>
-            <input class="form-input" type="text" id="f-name" placeholder="例：王小明 / 日系選物工作室">
+            <input class="form-input" type="text" id="f-name" name="name" required minlength="2" maxlength="80" autocomplete="name" aria-describedby="f-name-hint f-name-error" placeholder="例：王小明 / 日系選物工作室">
+            <p class="form-hint" id="f-name-hint">請填寫顧問可以稱呼你的姓名或公司名稱。</p>
+            <p class="form-field-error" id="f-name-error" hidden></p>
           </div>
           <div class="form-group">
-            <label class="form-label" for="f-contact">LINE ID 或手機號碼 <span class="req">*</span></label>
-            <input class="form-input" type="text" id="f-contact" placeholder="例：@wangxm / 0912-345-678">
+            <label class="form-label" for="f-phone">手機號碼 <span class="req">*</span></label>
+            <input class="form-input" type="tel" id="f-phone" name="phone" required maxlength="24" inputmode="tel" autocomplete="tel" aria-describedby="f-phone-hint f-phone-error" placeholder="例：0912-345-678">
+            <p class="form-hint" id="f-phone-hint">台灣手機為 09 開頭、共 10 碼，也可填寫 +886 格式。</p>
+            <p class="form-field-error" id="f-phone-error" hidden></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-line">LINE ID <span class="req">*</span></label>
+            <input class="form-input" type="text" id="f-line" name="lineId" required maxlength="100" autocapitalize="none" spellcheck="false" autocomplete="off" aria-describedby="f-line-hint f-line-error" placeholder="例：wangxm 或 @你的官方帳號ID">
+            <p class="form-hint" id="f-line-hint">請填可搜尋的 ID，不是 LINE 暱稱。可在 LINE「設定 › 個人檔案」查看，並開啟「允許利用 ID 加入好友」。</p>
+            <p class="form-field-error" id="f-line-error" hidden></p>
           </div>
           <div class="form-group">
             <label class="form-label" for="f-volume">目前每月出貨量（估計） <span class="req">*</span></label>
-            <select class="form-select" id="f-volume">
+            <select class="form-select" id="f-volume" name="volume" required aria-describedby="f-volume-error">
               <option value="">請選擇</option>
               <option value="30kg 以下">30kg 以下</option>
               <option value="30–50kg">30 – 50 kg</option>
               <option value="50–100kg">50 – 100 kg</option>
               <option value="100kg 以上">100kg 以上</option>
             </select>
+            <p class="form-field-error" id="f-volume-error" hidden></p>
           </div>
           <div class="form-group">
             <label class="form-label" for="f-time">方便聯繫的時間 <span class="req">*</span></label>
-            <select class="form-select" id="f-time">
+            <select class="form-select" id="f-time" name="availableTime" required aria-describedby="f-time-error">
               <option value="">請選擇</option>
               <option value="早上 09:00–12:00">早上 09:00 – 12:00</option>
               <option value="下午 13:00–17:00">下午 13:00 – 17:00</option>
               <option value="傍晚 17:00–19:00">傍晚 17:00 – 19:00</option>
               <option value="不限時間">不限時間</option>
             </select>
+            <p class="form-field-error" id="f-time-error" hidden></p>
           </div>
           <div class="form-group full">
             <label class="form-label" for="f-note">想詢問的問題（選填）</label>
-            <textarea class="form-textarea" id="f-note" placeholder="例：我目前用其他家集運，想了解轉過來的費用差異和流程..."></textarea>
-            <div class="form-hint">不知道要問什麼也沒關係，留下聯絡方式即可，顧問會主動瞭解你的需求。</div>
+            <textarea class="form-textarea" id="f-note" name="question" maxlength="2000" aria-describedby="f-note-hint f-note-error" placeholder="例：我目前用其他家集運，想了解轉過來的費用差異和流程..."></textarea>
+            <div class="form-hint" id="f-note-hint">不知道要問什麼也沒關係，顧問會主動瞭解你的需求。（最多 2,000 字）</div>
+            <p class="form-field-error" id="f-note-error" hidden></p>
           </div>
           <!-- Honeypot：真人看不到，bot 會填 -->
           <div style="display:none" aria-hidden="true">
@@ -1619,13 +1644,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </div>
         <div class="form-submit">
-          <button class="btn-navy-lg" id="submit-btn" onclick="submitForm()">送出預約申請 →</button>
-          <p id="form-error" style="display:none; color:#c0392b; font-size:15px; margin:0;">送出失敗，請稍後再試</p>
+          <button class="btn-navy-lg" id="submit-btn" type="submit" disabled>送出預約申請</button>
+          <p id="form-error" role="alert" hidden></p>
         </div>
-      </div>
-      <div class="form-success" id="form-success">
+        <noscript><p class="form-field-error">請開啟瀏覽器的 JavaScript 後填寫表單，或直接來電 0933-261392。</p></noscript>
+      </form>
+      <div class="form-success" id="form-success" role="status" tabindex="-1">
         <div class="form-success-icon">✅</div>
-        <h3>收到了！我們會盡快聯繫你</h3>
+        <h3>申請已送出，我們會盡快聯繫你</h3>
         <p>通常在一個工作日內聯繫，如有急事請直接 LINE：<strong>@ippo</strong> 或來電 0933-261392</p>
       </div>
     </div>
@@ -1681,45 +1707,144 @@ function toggleAddon() {
 
 // Form submit
 const GAS_URL = 'https://script.google.com/macros/s/AKfycby6J275hWDeGjZzeaItMZFA5fvVJ1ii3SAN-vdlD4RmbcS3Otkde_8G-1_PqSdSxCQuRw/exec';
+const contactForm = document.getElementById('form-main');
+const contactFieldIds = ['f-name', 'f-phone', 'f-line', 'f-volume', 'f-time', 'f-note'];
+const allowedVolumes = ['30kg 以下', '30–50kg', '50–100kg', '100kg 以上'];
+const allowedTimes = ['早上 09:00–12:00', '下午 13:00–17:00', '傍晚 17:00–19:00', '不限時間'];
+let isSubmitting = false;
+let isSubmitted = false;
+let hasAttemptedSubmit = false;
 
-async function submitForm() {
-  const name = document.getElementById('f-name').value.trim();
-  const contact = document.getElementById('f-contact').value.trim();
-  const volume = document.getElementById('f-volume').value;
-  const availableTime = document.getElementById('f-time').value;
-  const question = document.getElementById('f-note').value.trim();
+function normalizeContactValue(id, value) {
+  // 備註保留原文；手機接受全形數字、空格、連字號及台灣國碼。
+  if (id === 'f-note' || id === 'f-volume' || id === 'f-time') return value.trim();
+  let normalized = value.normalize('NFKC').trim();
+  if (id === 'f-phone') {
+    normalized = normalized.replace(/[\s().\-\u2010-\u2015]/g, '');
+    return normalized.replace(/^(?:\+886|00886|886)0?/, '0');
+  }
+  if (id === 'f-name') return normalized.replace(/\s+/g, ' ');
+  return normalized;
+}
 
-  // Honeypot 檢查：有值代表是 bot
+function contactFieldError(id, value) {
+  switch (id) {
+    case 'f-name':
+      if (!value) return '請填寫姓名或公司名稱，讓顧問知道如何稱呼你。';
+      if (Array.from(value).length < 2 || Array.from(value).length > 80) return '姓名或公司名稱請填寫 2～80 個字。';
+      // 允許中文、外文姓名與含數字的公司名稱，僅攔截明顯無效內容。
+      if (!/\p{L}/u.test(value) || /[<>\u0000-\u001f\u007f]/u.test(value) || /(?:https?:\/\/|www\.)/i.test(value)) {
+        return '請填寫姓名或公司名稱，不能只填數字、符號或網址。';
+      }
+      if (/^(?:test(?:ing)?\d*|測試(?:資料)?|测试(?:资料)?|亂填|乱填|隨便|随便|asdf\w*|qwerty\w*)$/i.test(value)) {
+        return '請填寫可供聯繫的姓名或公司名稱，勿填測試文字。';
+      }
+      return '';
+    case 'f-phone':
+      if (!value) return '請填寫手機號碼，方便顧問與你聯繫。';
+      return /^09\d{8}$/.test(value) ? '' : '手機號碼須為 09 開頭的 10 碼數字，例如 0912-345-678。';
+    case 'f-line':
+      if (!value) return '請填寫 LINE ID；可在 LINE「設定 › 個人檔案」查看。';
+      // 同時接受個人 ID 與 @ 開頭的官方帳號，格式不代表帳號已驗證。
+      return /^@?[a-z0-9._-]+$/i.test(value) && value.length <= 100 && /[a-z0-9]/i.test(value)
+        ? '' : '請填 LINE ID，不是暱稱或連結。ID 可包含英數字、點、底線及連字號；官方帳號可保留 @。';
+    case 'f-volume':
+      return allowedVolumes.includes(value) ? '' : '請選擇目前每月出貨量，估計即可。';
+    case 'f-time':
+      return allowedTimes.includes(value) ? '' : '請選擇方便聯繫的時間。';
+    case 'f-note':
+      return value.length <= 2000 ? '' : '詢問內容請控制在 2,000 字以內。';
+    default:
+      return '';
+  }
+}
+
+function validateContactField(id, normalize = false) {
+  const field = document.getElementById(id);
+  const value = normalizeContactValue(id, field.value);
+  if (normalize) field.value = value;
+  const message = contactFieldError(id, value);
+  const error = document.getElementById(`${id}-error`);
+  error.textContent = message;
+  error.hidden = !message;
+  field.setAttribute('aria-invalid', message ? 'true' : 'false');
+  return !message;
+}
+
+contactFieldIds.forEach(id => {
+  const field = document.getElementById(id);
+  field.addEventListener('blur', () => validateContactField(id, true));
+  const updateValidation = event => {
+    if (event.isComposing) return;
+    if (hasAttemptedSubmit || field.hasAttribute('aria-invalid')) validateContactField(id);
+    document.getElementById('form-error').hidden = true;
+  };
+  field.addEventListener('input', updateValidation);
+  field.addEventListener('change', updateValidation);
+});
+
+async function submitForm(event) {
+  event.preventDefault();
+  if (isSubmitting || isSubmitted) return;
+
+  // 保留既有 honeypot；真正的防濫用及資料驗證仍須在 GAS 端執行。
   if (document.getElementById('f-website').value) return;
 
-  if (!name || !contact || !volume || !availableTime) {
-    alert('請填寫所有必填欄位（姓名、聯絡方式、出貨量、聯繫時間）');
+  hasAttemptedSubmit = true;
+  const invalidFields = contactFieldIds.filter(id => !validateContactField(id, true));
+  const btn = document.getElementById('submit-btn');
+  const errEl = document.getElementById('form-error');
+  if (invalidFields.length) {
+    errEl.textContent = '尚未送出，請依照欄位下方的提示修正資料。';
+    errEl.hidden = false;
+    document.getElementById(invalidFields[0]).focus();
     return;
   }
 
-  const btn = document.getElementById('submit-btn');
-  const errEl = document.getElementById('form-error');
+  const name = document.getElementById('f-name').value;
+  const phone = document.getElementById('f-phone').value;
+  const lineId = document.getElementById('f-line').value;
+  const volume = document.getElementById('f-volume').value;
+  const availableTime = document.getElementById('f-time').value;
+  const question = document.getElementById('f-note').value;
+  // 維持既有 GAS 的五個欄位，手機與 LINE ID 仍寫入 contact，不改收件表結構。
+  const contact = `手機：${phone} / LINE ID：${lineId}`;
+  isSubmitting = true;
   btn.disabled = true;
   btn.textContent = '送出中...';
-  errEl.style.display = 'none';
+  errEl.hidden = true;
+  contactForm.setAttribute('aria-busy', 'true');
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
 
   try {
+    // 既有 GAS 使用 no-cors，回應不透明，網頁無法確認試算表是否已寫入。
     await fetch(GAS_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ name, contact, volume, availableTime, question })
+      body: JSON.stringify({ name, contact, volume, availableTime, question }),
+      signal: controller.signal
     });
-    document.getElementById('form-main').style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
+    isSubmitted = true;
+    contactForm.style.display = 'none';
+    const success = document.getElementById('form-success');
+    success.style.display = 'block';
+    success.focus();
   } catch (err) {
     console.error('送出失敗:', err);
-    errEl.style.display = 'block';
+    errEl.textContent = '目前無法確認是否送出，資料已保留。請稍後再試，或直接來電 0933-261392。';
+    errEl.hidden = false;
   } finally {
-    btn.disabled = false;
-    btn.textContent = '送出預約申請 →';
+    clearTimeout(timeout);
+    isSubmitting = false;
+    contactForm.removeAttribute('aria-busy');
+    btn.disabled = isSubmitted;
+    btn.textContent = '送出預約申請';
   }
 }
+contactForm.addEventListener('submit', submitForm);
+document.getElementById('submit-btn').disabled = false;
 
 // Keyboard support for flip cards
 document.querySelectorAll('.flip-card').forEach(card => {
