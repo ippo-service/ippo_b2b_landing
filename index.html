@@ -763,9 +763,6 @@ section { padding: 88px 5vw; }
   box-shadow: 0 0 0 3px rgba(180,35,24,0.12);
 }
 .form-required-note { font-size: 14px; color: var(--dim); margin: -16px 0 24px; }
-.contact-type-options { display: flex; gap: 24px; flex-wrap: wrap; margin: 0 0 12px; }
-.contact-type-options label { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; color: var(--ink); cursor: pointer; }
-.contact-type-options input { width: 18px; height: 18px; accent-color: var(--navy); }
 .form-submit { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 #form-error { color: #b42318; font-size: 15px; line-height: 1.6; margin: 0; }
 .btn-navy-lg {
@@ -1593,23 +1590,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <form id="form-main" novalidate>
         <div class="form-title">一個工作日內回覆</div>
         <div class="form-subtitle">不清楚要問什麼也沒關係，顧問會主動了解你的出貨需求，提供適合的方案建議。</div>
-        <p class="form-required-note">標示 <span class="req">*</span> 為必填。手機或 LINE 擇一填寫，方便顧問回覆。</p>
+        <p class="form-required-note">標示 <span class="req">*</span> 為必填。請留下可聯繫到你的手機與 LINE ID，方便顧問回覆。</p>
         <div class="form-grid">
-          <div class="form-group">
+          <div class="form-group full">
             <label class="form-label" for="f-name">姓名 / 公司名稱 <span class="req">*</span></label>
             <input class="form-input" type="text" id="f-name" name="name" required autocomplete="name" aria-describedby="f-name-hint f-name-error" placeholder="例：王小明 / 日系選物工作室">
             <p class="form-hint" id="f-name-hint">請填寫顧問可以稱呼你的姓名或公司名稱。</p>
             <p class="form-field-error" id="f-name-error" hidden></p>
           </div>
           <div class="form-group">
-            <label class="form-label" for="f-contact">LINE ID 或手機號碼 <span class="req">*</span></label>
-            <div class="contact-type-options" role="group" aria-label="選擇聯絡方式">
-              <label><input type="radio" name="contactType" value="phone" checked>手機號碼</label>
-              <label><input type="radio" name="contactType" value="line">LINE ID</label>
-            </div>
-            <input class="form-input" type="tel" id="f-contact" name="contact" required inputmode="tel" autocomplete="tel" autocapitalize="none" spellcheck="false" aria-describedby="f-contact-hint f-contact-error" placeholder="例：0912-345-678">
-            <p class="form-hint" id="f-contact-hint">台灣手機為 09 開頭、共 10 碼，也可填寫 +886 格式。</p>
-            <p class="form-field-error" id="f-contact-error" hidden></p>
+            <label class="form-label" for="f-phone">手機號碼 <span class="req">*</span></label>
+            <input class="form-input" type="tel" id="f-phone" name="phone" required maxlength="24" inputmode="tel" autocomplete="tel" aria-describedby="f-phone-hint f-phone-error" placeholder="例：0912-345-678">
+            <p class="form-hint" id="f-phone-hint">台灣手機為 09 開頭、共 10 碼，也可填寫 +886 格式。</p>
+            <p class="form-field-error" id="f-phone-error" hidden></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-line">LINE ID <span class="req">*</span></label>
+            <input class="form-input" type="text" id="f-line" name="lineId" required maxlength="100" autocapitalize="none" spellcheck="false" autocomplete="off" aria-describedby="f-line-hint f-line-error" placeholder="例：wangxm 或 @你的官方帳號ID">
+            <p class="form-hint" id="f-line-hint">請填可搜尋的 ID，不是 LINE 暱稱。可在 LINE「設定 › 個人檔案」查看，並開啟「允許利用 ID 加入好友」。</p>
+            <p class="form-field-error" id="f-line-error" hidden></p>
           </div>
           <div class="form-group">
             <label class="form-label" for="f-volume">目前每月出貨量（估計） <span class="req">*</span></label>
@@ -1709,14 +1708,12 @@ function toggleAddon() {
 // Form submit
 const GAS_URL = 'https://script.google.com/macros/s/AKfycby6J275hWDeGjZzeaItMZFA5fvVJ1ii3SAN-vdlD4RmbcS3Otkde_8G-1_PqSdSxCQuRw/exec';
 const contactForm = document.getElementById('form-main');
-const contactFieldIds = ['f-name', 'f-contact', 'f-volume', 'f-time', 'f-note'];
+const contactFieldIds = ['f-name', 'f-phone', 'f-line', 'f-volume', 'f-time', 'f-note'];
 const allowedVolumes = ['30kg 以下', '30–50kg', '50–100kg', '100kg 以上'];
 const allowedTimes = ['早上 09:00–12:00', '下午 13:00–17:00', '傍晚 17:00–19:00', '不限時間'];
 let isSubmitting = false;
 let isSubmitted = false;
 let hasAttemptedSubmit = false;
-let selectedContactType = 'phone';
-const contactDrafts = { phone: '', line: '' };
 
 function normalizeMobileNumber(value) {
   return value.normalize('NFKC').trim()
@@ -1725,19 +1722,22 @@ function normalizeMobileNumber(value) {
 }
 
 function normalizeContactValue(id, value) {
-  // 只有手機整理格式；姓名、LINE 及備註不套用額外的格式規則。
-  return id === 'f-contact' && selectedContactType === 'phone'
-    ? normalizeMobileNumber(value) : value.trim();
+  if (id === 'f-phone') return normalizeMobileNumber(value);
+  if (id === 'f-line') return value.normalize('NFKC').trim();
+  return value.trim();
 }
 
 function contactFieldError(id, value) {
   switch (id) {
     case 'f-name':
       return value ? '' : '請填寫姓名或公司名稱，讓顧問知道如何稱呼你。';
-    case 'f-contact':
-      if (!value) return selectedContactType === 'phone' ? '請填寫手機號碼。' : '請填寫 LINE ID。';
-      if (selectedContactType === 'line') return '';
+    case 'f-phone':
+      if (!value) return '請填寫手機號碼。';
       return /^09\d{8}$/.test(value) ? '' : '手機號碼須為 09 開頭的 10 碼數字，例如 0912-345-678。';
+    case 'f-line':
+      if (!value) return '請填寫 LINE ID。';
+      return /^@?[a-z0-9._-]+$/i.test(value) && value.length <= 100 && /[a-z0-9]/i.test(value)
+        ? '' : '請填 LINE ID，不是暱稱或連結。ID 可包含英數字、點、底線及連字號；官方帳號可保留 @。';
     case 'f-volume':
       return allowedVolumes.includes(value) ? '' : '請選擇目前每月出貨量，估計即可。';
     case 'f-time':
@@ -1773,28 +1773,6 @@ contactFieldIds.forEach(id => {
   field.addEventListener('change', updateValidation);
 });
 
-document.querySelectorAll('input[name="contactType"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    if (!radio.checked) return;
-    const field = document.getElementById('f-contact');
-    contactDrafts[selectedContactType] = field.value;
-    selectedContactType = radio.value;
-    field.value = contactDrafts[selectedContactType];
-    const isPhone = selectedContactType === 'phone';
-    field.type = isPhone ? 'tel' : 'text';
-    field.inputMode = isPhone ? 'tel' : 'text';
-    field.autocomplete = isPhone ? 'tel' : 'off';
-    field.placeholder = isPhone ? '例：0912-345-678' : '例：wangxm 或 @你的官方帳號ID';
-    document.getElementById('f-contact-hint').textContent = isPhone
-      ? '台灣手機為 09 開頭、共 10 碼，也可填寫 +886 格式。'
-      : '請填可搜尋的 LINE ID，可在 LINE「設定 › 個人檔案」查看。';
-    document.getElementById('f-contact-error').hidden = true;
-    document.getElementById('form-error').hidden = true;
-    field.removeAttribute('aria-invalid');
-    field.focus();
-  });
-});
-
 async function submitForm(event) {
   event.preventDefault();
   if (isSubmitting || isSubmitted) return;
@@ -1814,12 +1792,13 @@ async function submitForm(event) {
   }
 
   const name = document.getElementById('f-name').value;
-  const contact = document.getElementById('f-contact').value;
-  const contactType = selectedContactType;
+  const phone = document.getElementById('f-phone').value;
+  const lineId = document.getElementById('f-line').value;
   const volume = document.getElementById('f-volume').value;
   const availableTime = document.getElementById('f-time').value;
   const question = document.getElementById('f-note').value;
-  // contact 原值寫入 Sheet 的 C 欄；contactType 只供 GAS 判斷是否驗證手機，不增加欄位。
+  // phone、lineId 分別寫入試算表；contact 讓部署切換期間的舊版 GAS 仍能完整收件。
+  const contact = `手機：${phone} / LINE ID：${lineId}`;
   isSubmitting = true;
   btn.disabled = true;
   btn.textContent = '送出中...';
@@ -1834,7 +1813,7 @@ async function submitForm(event) {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ name, contact, volume, availableTime, question, contactType }),
+      body: JSON.stringify({ name, phone, lineId, contact, volume, availableTime, question }),
       signal: controller.signal
     });
     isSubmitted = true;
